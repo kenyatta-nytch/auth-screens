@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/index.css">
+    <title>Auth Modal</title>
+</head>
+<body>
+    <header class="header">
+        <h1>Logo</h1>
+        <button type="button" id="open_btn" onclick="openModal(event)" class="link_btn">SignIn | SignUp</button>
+    </header>
+    <main class="main">
+    </main>
+    <div id="modal_container">
+        <section class="modal_header">
+            <h3>Logo</h3>
+            <button type="button" id="close_btn" onclick="closeModal(event)" class="link_btn close_btn">&#10060</button>
+        </section>
+        <section class="modal_body">
+            <div class="content">
+                <div class="signup">
+                    <h2 class="form_header">Sign Up</h2>
+                    <div class="auth_redirect">
+                        <p>Already have an account?</p>
+                        <button type="button" id="signin_redirect" class="link_btn redirect_btn">Sign In</button>
+                    </div>
+                    <form class="auth_form" method="POST" onsubmit="handleAuth(event)">
+                        <input
+                        required
+                        type="text"
+                        name="fname"
+                        id="signup_fname"
+                        class="auth_input"
+                        placeholder="First Name"
+                        />
+                        <input
+                        required
+                        type="text"
+                        name="lname"
+                        id="signup_lname"
+                        class="auth_input"
+                        placeholder="Last Name"
+                        />
+                        <input
+                        required
+                        type="email"
+                        name="email"
+                        id="signup_email"
+                        class="auth_input"
+                        placeholder="Email Address"
+                        />
+                        <input
+                        required
+                        type="password"
+                        name="password"
+                        id="signup_pass"
+                        class="auth_input"
+                        placeholder="Password"
+                        />
+                        <div id="signup_errors" class="errors"></div>
+                        <label class="terms_conditions">
+                            <input
+                            required
+                            type="checkbox"
+                            name="terms"
+                            class="auth_input"
+                            id="terms_conditions"
+                            />
+                           By checking this box, you accept our Terms & Conditions
+                        </label>
+                        <button type="submit" id="signup_btn" class="auth_btn">Sign Up</button>
+                    </form>
+                </div>
+                <div class="signin">
+                    <h2 class="form_header">Sign In</h2>
+                    <div class="auth_redirect">
+                        <p>No account?</p>
+                        <button type="button" id="signup_redirect" class="link_btn redirect_btn">Sign Up</button>
+                    </div>
+                    <form class="auth_form" method="POST" onsubmit="handleAuth(event)">
+                        <input
+                        required
+                        type="email"
+                        name="email"
+                        id="signin_email"
+                        class="auth_input"
+                        placeholder="Email Address"
+                        />
+                        <input
+                        required
+                        type="password"
+                        name="password"
+                        id="signin_pass"
+                        class="auth_input"
+                        placeholder="Password"
+                        />
+                        <div id="signin_errors" class="errors"></div>
+                        <div class="secondary">
+                            <label>
+                                <input
+                                    required
+                                    type="checkbox"
+                                    name="remember"
+                                    class="auth_input"
+                                    id="remember_me"
+                                />
+                                    Remember me
+                            </label>
+                            <button type="button" id="forgot_password" class="link_btn redirect_btn">I forgot my password</button>
+                        </div>
+                        <button type="submit" id="signin_btn" class="auth_btn">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+<script src="js/index.js"></script>
+</html>
