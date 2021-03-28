@@ -26,7 +26,7 @@
                         <p>Already have an account?</p>
                         <button type="button" id="signin_redirect" class="link_btn redirect_btn">Sign In</button>
                     </div>
-                    <form class="auth_form" method="POST" onsubmit="handleAuth(event)">
+                    <form id="signup" class="auth_form" method="POST" onsubmit="signUp(event)">
                         <input
                         required
                         type="text"
@@ -79,7 +79,7 @@
                         <p>No account?</p>
                         <button type="button" id="signup_redirect" class="link_btn redirect_btn">Sign Up</button>
                     </div>
-                    <form class="auth_form" method="POST" onsubmit="handleAuth(event)">
+                    <form id="signin" class="auth_form" method="POST" onsubmit="signIn(event)">
                         <input
                         required
                         type="email"
