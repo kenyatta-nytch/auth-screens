@@ -44,10 +44,12 @@ function signUp(event) {
     event.preventDefault();
     const signUpForm = document.querySelector('#signup');
     const data = getFormData(signUpForm);
+    const errors = ['This email address has already been used']
 
     setTimeout(() => {
-        alert(data)
-    }, 500)
+        alert(JSON.stringify(data))
+        // renderErrors('signup', errors)
+    }, 300)
 }
 
 // sign in logic/requests
@@ -55,16 +57,18 @@ function signIn(event) {
     event.preventDefault();
     const signInForm = document.querySelector('#signin');
     const data = getFormData(signInForm);
+    const errors = ['Incorrect username or password']
 
     setTimeout(() => {
-        alert(data)
-    })
+        // alert(JSON.stringify(data));
+        renderErrors('signin', errors);
+    }, 300)
     
 }
 
 // call to set form error
 // receives an array of error strings
-function renderErrors(errors, type) {
+function renderErrors(type, errors) {
     if (!Array.isArray(errors)) throw new TypeError("Pass an array of errors to the rederError function");
     if (!type) throw new Error('Provide an operation type to renderError');
 

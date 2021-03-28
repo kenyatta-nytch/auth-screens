@@ -121,6 +121,12 @@ body {
 
 }
 
+.error {
+    padding: 2px;
+    color: #ff0000;
+    font-size: 12px;
+}
+
 .secondary {
     padding: 5px 0;
     width: 100%;
