@@ -4,12 +4,13 @@
     padding: 0;
 }
 
-body {
+.auth_container {
     height: 100vh;
     position: relative;
     display: grid;
     grid-template-rows: 50px 1fr;
     grid-template-columns: 1fr;
+    overflow-x: hidden;
 }
 
 .header {
@@ -17,7 +18,14 @@ body {
     display: flex;
     justify-content: space-between;
 }
+#modal_container, #nav_container {
+    position: absolute;
+}
+#nav_container {
+    right: 0;
+}
 
+/* Modal styles */
 #modal_container {
     position: absolute;
     width: 100vw;
@@ -30,7 +38,6 @@ body {
     display: flex;
     justify-content: space-between;
 }
-
 .modal_body {
     max-width: 500px;
     margin: 0 auto;
@@ -42,13 +49,14 @@ body {
     margin-left: 0;
     transition: ease-out .2s;
 }
-.closed {
-    top: -100%;
-}
-.open {
+.modal_open {
     top: 0;
 }
+.modal_closed {
+    top: -100%;
+}
 
+/* Form styles */
 .signin, .signup {
     flex: 1;
     display: flex;
@@ -56,7 +64,6 @@ body {
     align-items: center;
     padding: 1em 2em;
 }
-
 .auth_form {
     width: 100%;
     flex: 1;
@@ -105,6 +112,45 @@ body {
     text-decoration: underline;
 }
 
+/* side nav */
+.side_nav {
+    position: absolute;
+    top: 0;
+    width: 20%;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -1px 0 12px #ddd;
+}
+.side_nav_open {
+    right: 0;
+}
+.side_nav_closed {
+    right: -100%;
+}
+.side_nav_header {
+    display: flex;
+    padding: 1em;
+    justify-content: space-between;
+    align-items: center;
+}
+.side_nav_body {
+    padding: .5em 2em;
+}
+.side_nav_links {
+    text-decoration: none;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: 500;
+    display: block;
+    color: #111;
+}
+.side_nav_header .auth_email {
+    color: #gray;
+    font-weight: 400;
+}
+
+
+/* different button styles */
 .link_btn {
     width: max-content;
     padding: 4px;
