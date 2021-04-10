@@ -13,11 +13,6 @@
     overflow-x: hidden;
 }
 
-.header {
-    box-shadow: 0 3px 15px gray; 
-    display: flex;
-    justify-content: space-between;
-}
 #modal_container, #nav_container {
     position: absolute;
 }
@@ -31,6 +26,7 @@
     width: 100vw;
     height: 96%;
     background-color: #fff;
+    z-index: 999;
     transition: ease .2s;
 }
 .modal_header {
@@ -53,6 +49,7 @@
     top: 0;
 }
 .modal_closed {
+    display: none;
     top: -100%;
 }
 
@@ -92,7 +89,7 @@
     margin: 5px auto;
     border: none;
     background-color: gray;
-    color: #fff; 
+    color: #fff;
     border-radius: 2px;
     cursor: pointer;
 }
@@ -116,15 +113,17 @@
 .side_nav {
     position: absolute;
     top: 0;
-    width: 20%;
     height: 100%;
+    width: 100%;
     background-color: #fff;
     box-shadow: -1px 0 12px #ddd;
+    z-index: 999;
 }
 .side_nav_open {
     right: 0;
 }
 .side_nav_closed {
+    display: none;
     right: -100%;
 }
 .side_nav_header {
@@ -144,9 +143,34 @@
     display: block;
     color: #111;
 }
-.side_nav_header .auth_email {
-    color: #gray;
+.side_nav_header .user_email {
+    color: gray;
+    padding: 5px 10px;
     font-weight: 400;
+}
+
+/* Cart Component */
+.cart-icon {
+    position: relative;
+    margin: 5px 10px;
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 16px;
+    cursor: pointer;
+}
+.cart-icon-count {
+    position: absolute;
+    padding: 2px;
+    height: 18px;
+    width: 18px;
+    top: -8px;
+    right: -8px;
+    border-radius: 50%;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 500;
+    text-align: center;
+    background-color: #ff5555;
 }
 
 
@@ -185,5 +209,20 @@
     .secondary {
         flex-direction: row;
         justify-content: space-between;
+    }
+    .side_nav {
+        width: 40%;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .side_nav {
+        width: 30%;
+    }
+}
+
+@media only screen and (min-width: 1025px) {
+    .side_nav {
+        width: 20%;
     }
 }
