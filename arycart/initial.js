@@ -245,12 +245,7 @@ if (document.getElementById('arycarturl')) {
 
 // whenever the window loads, check if cart is logged if not get cart info
 window.onload = function() {
+    window.isAryCartLogged ? switchToNavControl() : getCartInfo();
     const count = window.arycart?.cart?.length || 0;
     renderCart(count);
-
-    if (window.isAryCartLogged) {
-        switchToNavControl();
-    } else {
-        getCartInfo();
-    }
 };

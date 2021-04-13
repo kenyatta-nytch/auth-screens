@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/arycart.css">
-    <script src="js/arycart-constants.js"></script>
     <title>Auth Modal</title>
 </head>
 <body>
+    <auth-component open="false"></auth-component>
+    <side-nav open="false"></side-nav>
     <main>
+        <ary-controls></ary-controls>
         <section>
         </section>
-        <div id="aryauth"></div>
-        <div id="aryauth-controls"></div>
     </main>
 </body>
-<script src="js/arycart.js"></script>
+<script type="module" src="arycart/index.js"></script>
+<!-- <script id="arycarturl" src="https://cart4.monmeublesurmesure.fr/js/arycart.js" defer=""></script> -->
 </html>
