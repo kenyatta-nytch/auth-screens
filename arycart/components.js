@@ -1,4 +1,4 @@
-import {MODAL, AUTH_CONTROL, SIDENAV_CONTROL, SIDENAV, SIGNIN, SIGNUP, cartIcon} from './templateConstants.js'
+import {MODAL, AUTH_CONTROL, SIDENAV_CONTROL, SIDENAV, SIGNIN, SIGNUP, CART_ICON} from './templateConstants.js'
 import {openModal, closeModal, openSideNav, closeSideNav} from './controls.js'
 import {signIn, signUp, logout} from './apiCalls.js'
 import {generateHTML} from './helpers.js'
@@ -24,7 +24,7 @@ export class Controls extends HTMLElement {
 
   constructor() {
     super()
-    this.cartTemplate = generateHTML(cartIcon()).cloneNode(true)
+    this.cartTemplate = generateHTML(CART_ICON).cloneNode(true)
     this.authTemplate = generateHTML(AUTH_CONTROL).cloneNode(true)
     this.navTemplate = generateHTML(SIDENAV_CONTROL).cloneNode(true)
 
@@ -35,9 +35,9 @@ export class Controls extends HTMLElement {
   }
 
   connectedCallback() {
-    this.cart = { ...window.arycart.cart }
     this.renderControls()
 
+    window.arycartContext.state.addChangeListener(state => { this.updateCart(state.cart) })
   }
 
   attributeChangedCallback() {
@@ -51,6 +51,12 @@ export class Controls extends HTMLElement {
     if (this.children.length > 1) {
       this.children[1].replaceWith(control)
     }
+  }
+
+  updateCart(cart) {
+    this.count = Array.isArray(cart) && cart.length || 0
+    this.querySelector('#cart-count').innerHTML = this.count
+    this.querySelector('#cart-link').setAttribute('href', this.count > 0? '/order':'#')
   }
 
   renderControls() {
@@ -106,12 +112,18 @@ export class SideNav extends Base {
   }
   
   connectedCallback() {
-    this.user = window.arycart.user
     this.querySelector('#close_side_nav').addEventListener('click', closeSideNav)
     this.querySelector('#logout').addEventListener('click', logout)
+
+    window.arycartContext.state.addChangeListener(state => { this.updateUser(state) })
   }
 
   attributeChangedCallback() {
     this.toggle('side_nav')
+  }
+
+  updateUser(state) {
+    this.user = state.user
+    this.querySelector('#user-email').innerHTML = this.user
   }
 }

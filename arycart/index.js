@@ -1,5 +1,17 @@
-import {AuthComponent, Controls, SideNav} from './components.js'
+import storeFactory from './store.js'
+import actionsFactory from './actions.js'
+import { AuthComponent, Controls, SideNav } from './components.js'
 import { getCartInfo } from './apiCalls.js'
+
+const INITIAL_STATE = {
+  user: '',
+  cart: []
+}
+
+const state = storeFactory(INITIAL_STATE)
+const actions = actionsFactory(state)
+
+window.arycartContext = Object.freeze({ state, actions })
 
 window.arycart = {}
 

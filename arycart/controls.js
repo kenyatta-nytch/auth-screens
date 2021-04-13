@@ -45,18 +45,20 @@ export function switchControls(to) {
   @params cartdata{Object}
 */
 export function updateControls(cartdata) {
+  const {setUser, updateCart} = window.arycartContext.actions
+
   if (cartdata.logged) {
       window.isAryCartLogged = cartdata.logged;
-      window.arycart.user = cartdata.user;
+      setUser(cartdata.user)
       switchControls('nav')
   } else {
       window.isAryCartLogged = false;
-      window.arycart.user = '';
+      setUser('');
       switchControls('auth')
   }
 
   if (cartdata.cart) {
-      window.arycart.cart = cartdata.cart;
+      updateCart(cartdata.cart);
   } else {
     window.arycart.cart = []
   }
