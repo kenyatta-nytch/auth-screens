@@ -3,6 +3,9 @@ const modal = document.querySelector('auth-component');
 const sidenav = document.querySelector('side-nav');
 
 // open/close auth modal
+window.openModal = openModal
+window.closeModal = closeModal
+
 export function closeModal() {
   if (modal && modal.hasAttribute('open')) {
     modal.setAttribute('open', 'false')
