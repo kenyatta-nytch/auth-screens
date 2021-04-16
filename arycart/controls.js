@@ -1,3 +1,4 @@
+// controls for the auth-component and side-nav
 const modal = document.querySelector('auth-component');
 const sidenav = document.querySelector('side-nav');
 
@@ -50,16 +51,12 @@ export function updateControls(cartdata) {
   if (cartdata.logged) {
       window.isAryCartLogged = cartdata.logged;
       setUser(cartdata.user)
+      updateCart(cartdata.cart);
       switchControls('nav')
   } else {
       window.isAryCartLogged = false;
       setUser('');
+      updateCart([])
       switchControls('auth')
-  }
-
-  if (cartdata.cart) {
-      updateCart(cartdata.cart);
-  } else {
-    window.arycart.cart = []
   }
 }

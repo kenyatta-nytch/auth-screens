@@ -1,22 +1,21 @@
-import storeFactory from './store.js'
-import actionsFactory from './actions.js'
+import { store, handlers } from './context.js'
 import { AuthComponent, Controls, SideNav } from './components.js'
 import { getCartInfo } from './apiCalls.js'
 
+// context initialisations
+// to add more state variables, add key-value in INITIAL_STATE then add handler to update in ./context.js
 const INITIAL_STATE = {
   user: '',
   cart: []
 }
+const state = store(INITIAL_STATE)
+const actions = handlers(state)
 
-const state = storeFactory(INITIAL_STATE)
-const actions = actionsFactory(state)
-
+// create application context from initialised values
 window.arycartContext = Object.freeze({ state, actions })
 
-window.arycart = {}
-
 // for development
-window.arycart.url = 'https://cart4.monmeublesurmesure.fr'
+window.arycarturl = 'https://cart4.monmeublesurmesure.fr'
 
 // for production
 // if (document.getElementById('arycarturl')) {
@@ -31,6 +30,7 @@ window.onload = function() {
   window.isAryCartLogged ?? getCartInfo();
 };
 
+// create our custom elements
 customElements.define('auth-component', AuthComponent)
 customElements.define('ary-controls', Controls)
 customElements.define('side-nav', SideNav)

@@ -1,8 +1,9 @@
 import {updateControls, closeModal, closeSideNav} from './controls.js';
 import {renderErrors, getFormData} from './helpers.js'
 
+// api call request
 function callAuthApi(route, data, errorclass, successfunc=null) {
-  fetch(window.arycart.url+route, { //+'?XDEBUG_SESSION_START=PHPSTORM',
+  fetch(window.arycarturl+route, { //+'?XDEBUG_SESSION_START=PHPSTORM',
       method: 'POST',
       body: JSON.stringify(data),
       headers: { accept: 'application/json', 'content-type': 'application/json'},
@@ -19,7 +20,7 @@ function callAuthApi(route, data, errorclass, successfunc=null) {
               }
               else renderErrors(errorclass, [response.error]);
           }).catch((e) => {
-              renderErrors(errorclass, [`Error: could not connect to shopping cart ${r.status} (${r.text()})`]);
+              renderErrors(errorclass, [`Error: ${e.message}`]);
           });
       }
   }).catch(e => {
@@ -51,6 +52,7 @@ export function signIn(event) {
       closeModal)
 }
 
+// logout logic
 export function logout(event) {
   callAuthApi('/logoutjs', {}, 'signin', closeSideNav)
 }
