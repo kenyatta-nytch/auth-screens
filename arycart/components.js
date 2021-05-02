@@ -1,5 +1,5 @@
 // Web components classes.
-import {MODAL, AUTH_CONTROL, SIDENAV_CONTROL, SIDENAV, SIGNIN, SIGNUP, CART_ICON} from './templateConstants.js'
+import {MODAL, AUTH_CONTROL, SIDENAV_CONTROL, SIDENAV, SIGNIN, SIGNUP, CART_ICON, GO_TO_CART, productItem, itemsTotal, menuItem} from './templateConstants.js'
 import {openModal, closeModal, openSideNav, closeSideNav} from './controls.js'
 import {signIn, signUp, logout} from './apiCalls.js'
 import {generateHTML} from './helpers.js'
@@ -42,7 +42,7 @@ export class Controls extends HTMLElement {
 
   connectedCallback() {
     this.renderControls()
-
+    this.querySelector('#cart').addEventListener('click', openSideNav)
     // add a callback to application state context to be called when state changes.
     // updates cart whenever cart available in state changes
     window.arycartContext.state.addChangeListener(state => { this.updateCart(state.cart) })
@@ -66,7 +66,7 @@ export class Controls extends HTMLElement {
   updateCart(cart) {
     this.count = Array.isArray(cart) && cart.length || 0
     this.querySelector('#cart-count').innerHTML = this.count
-    this.querySelector('#cart-link').setAttribute('href', this.count > 0? '/order':'#')
+    // this.querySelector('#cart-link').setAttribute('href', this.count > 0? '/order':'#')
   }
 
   // render the appropriate controls when logged in or out
@@ -118,29 +118,92 @@ export class AuthComponent extends Base {
 export class SideNav extends Base {
   constructor() {
     super()
+    // links to account menu
+    this.menuItems = [
+      {href: '/myprojects', label: 'My projects'},
+      {href: '/myorders', label: 'My orders'},
+      {href: '/account', label: 'My account'},
+      {id: 'logout', href: '#', label: 'Logout'},
+    ]
+    this.cart = window.arycartContext.state.cart    // get current cart value
     this.template = generateHTML(SIDENAV)
 
     const data = this.template.cloneNode(true)
 
     this.appendChild(data)
+    this.body = this.querySelector('.side_nav_body')
     this.innerContainer = this.querySelector('#side_nav')
   }
   
   connectedCallback() {
+    this.setAttribute('content', 'cart')    // sets sidenav to render cart contents initially
     this.querySelector('#close_side_nav').addEventListener('click', closeSideNav)
-    this.querySelector('#logout').addEventListener('click', logout)
 
-    // callback to update user email when user in state changes
+    // render contents in the sidenav body
+    this.renderMenu()
+    this.renderCartContent()
+
+    // callback to update user email and cart content when user in state changes
     window.arycartContext.state.addChangeListener(state => { this.updateUser(state) })
+    window.arycartContext.state.addChangeListener(state => { this.renderCartContent(state) })
   }
 
   attributeChangedCallback() {
     this.toggle('side_nav')
+    this.renderMenu()
+    this.renderCartContent()
   }
 
   // add logged in user email to side nav
   updateUser(state) {
     this.user = state.user
     this.querySelector('#user-email').innerHTML = this.user
+  }
+
+  // display cart items
+  renderCartContent(state) {
+    if (state) this.cart = state.cart;    // update local cart property when called by state update
+    
+    // create list when side-nav content is cart
+    if(this.hasAttribute('content') && this.getAttribute('content') === 'cart') {
+      this.body.innerHTML = ''    // clear side-nav body contents
+
+      // wrapper for items
+      const list = document.createElement("div")
+      list.id = 'cart-items';
+      this.body.appendChild(list);
+
+      // go to cart button
+      this.body.appendChild(generateHTML(GO_TO_CART).cloneNode(true))
+
+      // calculate total and render item cards for each item in cart
+      if (this.cart.length > 0) {
+        let total = 0
+        this.cart.forEach(item => {
+          total += (item.product.price * item.quantity)
+          let cartItem = generateHTML(productItem(item)).cloneNode(true)
+          cartItem.addEventListener('click', () => {window.location = `/meuble/${item.product.id}`})
+          this.body.querySelector('#cart-items').appendChild(cartItem)
+        })
+
+        const totalComponent = generateHTML(itemsTotal(total)).cloneNode(true)
+        this.body.querySelector('#cart-items').appendChild(totalComponent)
+      } else {
+        const noItems = document.createTextNode("No items in cart.")
+        this.body.querySelector('#cart-items').appendChild(noItems)
+      }
+    }
+  }
+
+  // display account menu
+  renderMenu() {
+    if(this.hasAttribute('content') && this.getAttribute('content') === 'menu') {
+      this.body.innerHTML = ''
+      this.menuItems.forEach(item => {
+        let link = generateHTML(menuItem(item)).cloneNode(true);
+        this.body.appendChild(link)
+      })
+      this.querySelector('#logout').addEventListener('click', logout)
+    }
   }
 }

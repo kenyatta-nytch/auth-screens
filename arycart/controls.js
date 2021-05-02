@@ -23,8 +23,14 @@ export function closeSideNav() {
     sidenav.setAttribute('open', 'false')
   }
 }
-export function openSideNav() {
+export function openSideNav(event) {
   if (sidenav && sidenav.hasAttribute('open')) {
+    if (Object.values(event.path).some(val => val.id === 'cart')) {
+      sidenav.setAttribute('content', 'cart')
+    }
+    if (Object.values(event.path).some(val => val.id === 'sidenav_open_btn')) {
+      sidenav.setAttribute('content', 'menu')
+    }
     sidenav.setAttribute('open', 'true')
   }
 }

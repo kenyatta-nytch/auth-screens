@@ -13,7 +13,6 @@ function callAuthApi(route, data, errorclass, successfunc=null) {
           renderErrors(errorclass, [`Error: could not connect to shopping cart ${r.status} ${r.statusText}`]);
       } else {
           r.json().then((response) => {
-              console.log(response)
               if (response.success) {
                   updateControls(response);
                   if (successfunc) successfunc();
@@ -49,7 +48,7 @@ export function signIn(event) {
   callAuthApi('/loginjs',
       getFormData(document.querySelector('#signin')),
       'signin',
-      closeModal)
+      () => {  closeModal();})
 }
 
 // logout logic
