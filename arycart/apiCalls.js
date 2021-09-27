@@ -1,4 +1,4 @@
-import {updateControls, closeModal, closeSideNav} from './controls.js';
+import {updateControls, closeModal, closeSideNav, enableInput, successfulReset} from './controls.js';
 import {renderErrors, getFormData} from './helpers.js'
 
 // api call request
@@ -23,7 +23,7 @@ function callAuthApi(route, data, errorclass, successfunc=null) {
           });
       }
   }).catch(e => {
-          renderErrors(errorclass, [`Error: could not connect to shopping cart - ${e}`]);
+          renderErrors(errorclass, [`Error: could not connect to shopping cart - ${e.message}`]);
       }
   );
 }
@@ -39,7 +39,7 @@ export function signUp(event) {
   callAuthApi('/registerjs',
       getFormData(document.querySelector('#signup')),
       'signup',
-      closeModal)
+      () => { enableInput('#signup_btn'); closeModal();})
 }
 
 // sign in logic/requests
@@ -48,7 +48,16 @@ export function signIn(event) {
   callAuthApi('/loginjs',
       getFormData(document.querySelector('#signin')),
       'signin',
-      () => {  closeModal();})
+      () => { enableInput('#signin_btn'); closeModal();})
+}
+
+// reset password logic/requests
+export function resetPassword(event) {
+    event.preventDefault();
+    callAuthApi('/forgot-passwordjs',
+        getFormData(document.querySelector('#password_reset')),
+        'reset',
+        () => { successfulReset(); enableInput('#password_reset_btn');})
 }
 
 // logout logic

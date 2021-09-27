@@ -1,9 +1,9 @@
-import {updateControls} from './controls.js'
+import {updateControls, enableInput} from './controls.js'
 
-/*
-  @params {String} html markup
-  @return {Element} the html node tree
-*/
+/** 
+ * @param {String} html markup string to buld from
+ * @returns {Element} the html node tree
+ */
 export function generateHTML(html) {
   if (!html) return;
 
@@ -13,11 +13,11 @@ export function generateHTML(html) {
 }
 
 
-/*
-  get form data during submission
-  @params {HTMLFormElement}
-  @return {Object}
-*/
+/** 
+ * get form data during submission
+ * @param {HTMLFormElement} form HTML form to extract data
+ * @returns {Object} data 
+ */
 export function getFormData(form) {
   let data = {};
   const entries = new FormData(form).entries();
@@ -27,11 +27,11 @@ export function getFormData(form) {
   return data;
 }
 
-/*
-  render errors during authentication
-  @params:  type{String}    form to render errors to 'signin' or 'signup'
-            errors{Array[String]}   array of errors
-*/
+/** 
+ * render errors during authentication
+ * @param {String} type form to render errors to 'signin' or 'signup'
+ * @param {Array{String}} errors array of errors
+ */
 export function renderErrors(type, errors) {
   if (!errors || !Array.isArray(errors)) throw new TypeError("Pass an array of errors to the rederError function");
   if (!type) throw new Error('Provide an operation type to renderErrors');
@@ -39,6 +39,7 @@ export function renderErrors(type, errors) {
   updateControls({}); // In case of error, reset all cart/usercontrols
   let signinErrors = document.querySelector('#signin_errors');
   let signupErrors = document.querySelector('#signup_errors');
+  let resetErrors = document.querySelector('#reset_errors');
 
   const errorStrings = errors.map(e => {
       let err = document.createElement("p");
@@ -51,9 +52,15 @@ export function renderErrors(type, errors) {
   if (type === 'signin'){
       signinErrors.innerHTML = "";
       errorStrings.forEach(e => signinErrors.appendChild(e));
+      enableInput('#signin_btn')
   } else if(type === 'signup') {
       signupErrors.innerHTML = "";
       errorStrings.forEach(e => signupErrors.appendChild(e));
-  } else throw new SyntaxError("Pass a string of either 'signin' or 'signup'");
+      enableInput('#signup_btn')
+  } else if(type === 'reset') {
+      resetErrors.innerHTML = "";
+      errorStrings.forEach(e => resetErrors.appendChild(e));
+      enableInput('#password_reset_btn')
+  } else throw new SyntaxError("Pass a string of either 'signin' or 'signup' or 'reset'");
   return;
 }

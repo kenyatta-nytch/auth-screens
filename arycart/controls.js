@@ -35,10 +35,30 @@ export function openSideNav(event) {
   }
 }
 
-/*
-  switch btwn sidenav control and auth modal control
-  @params to{String} the control to switch to. 'auth' or 'nav'
-*/
+/**
+ * @param {String} id element id to enable
+ */
+export function enableInput(id) {
+  const el = document.querySelector(id);
+  if (el) {
+    el.removeAttribute('disabled');
+  }
+}
+
+export function successfulReset() {
+  const btn = document.querySelector('#password_reset_btn');
+  const info = document.querySelector('#reset_success');
+  const email = document.querySelector('#reset_email');
+
+  btn.style.display = 'none';
+  email.setAttribute('disabled', '');
+  info.style.display = 'block';
+}
+
+/**
+ * switch btwn sidenav control and auth modal control
+ * @param {String} to the control to switch to. 'auth' or 'nav'
+ */
 export function switchControls(to) {
   const controls = document.querySelector('ary-controls')
   if (to) {
@@ -50,10 +70,10 @@ export function switchControls(to) {
     }
   }
 }
-/*
-  save data and switch to relevant controls
-  @params cartdata{Object}
-*/
+/**
+ * save data and switch to relevant controls
+ * @param {Object} cartdata
+ */
 export function updateControls(cartdata) {
   const {setUser, updateCart} = window.arycartContext.actions
 

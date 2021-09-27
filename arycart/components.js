@@ -1,7 +1,7 @@
 // Web components classes.
-import {MODAL, AUTH_CONTROL, SIDENAV_CONTROL, SIDENAV, SIGNIN, SIGNUP, CART_ICON, GO_TO_CART, productItem, itemsTotal, menuItem} from './templateConstants.js'
+import {MODAL, AUTH_CONTROL, SIDENAV_CONTROL, SIDENAV, SIGNIN, SIGNUP, RESET_PASSWORD, CART_ICON, GO_TO_CART, productItem, itemsTotal, menuItem} from './templateConstants.js'
 import {openModal, closeModal, openSideNav, closeSideNav} from './controls.js'
-import {signIn, signUp, logout} from './apiCalls.js'
+import {signIn, signUp, resetPassword, logout} from './apiCalls.js'
 import {generateHTML} from './helpers.js'
 
 // root class for modal and sidenav
@@ -89,6 +89,7 @@ export class AuthComponent extends Base {
     this.template = generateHTML(MODAL).cloneNode(true)
     this.signin = generateHTML(SIGNIN).cloneNode(true)
     this.signup = generateHTML(SIGNUP).cloneNode(true)
+    this.reset = generateHTML(RESET_PASSWORD).cloneNode(true)
 
     this.appendChild(this.template)
     this.innerContainer = this.querySelector('#modal_container')
@@ -96,16 +97,69 @@ export class AuthComponent extends Base {
 
     this.authContainer.appendChild(this.signin)
     this.authContainer.appendChild(this.signup)
+    this.authContainer.appendChild(this.reset)
   }
 
   connectedCallback() {
     this.querySelector('#modal_close_btn').addEventListener('click', closeModal)
-    this.querySelector('#signin').addEventListener('submit', signIn)
-    this.querySelector('#signup').addEventListener('submit', signUp)
+    // submit events & callbacks
+    this.querySelector('#signin')
+        .addEventListener('submit',(e) => {
+          this.disableInput('#signin_btn')
+          signIn(e)
+        })
+    this.querySelector('#signup')
+        .addEventListener('submit',(e) => {
+          this.disableInput('#signup_btn')
+          signUp(e)
+        })
+    this.querySelector('#password_reset')
+        .addEventListener('submit',(e) => {
+          this.disableInput('#password_reset_btn')
+          resetPassword(e)
+        })
+
+    // auth screens redirect/switch
     this.querySelector('#signin_redirect')
-        .addEventListener('click', () => this.authContainer.style.marginLeft = '0')
+        .addEventListener('click', () => {
+          this.resetForms()
+          this.authContainer.style.marginLeft = '0'
+        })
     this.querySelector('#signup_redirect')
-        .addEventListener('click', () => this.authContainer.style.marginLeft = '-100%')
+        .addEventListener('click', () => {
+          this.resetForms()
+          this.authContainer.style.marginLeft = '-100%'
+        })
+    this.querySelector('#forgot_password')
+        .addEventListener('click', () => {
+          this.resetForms()
+          this.authContainer.style.marginLeft = '-200%'
+        })
+    this.querySelector('#cancel_reset_signup')
+        .addEventListener('click', () => {
+          this.resetForms()
+          this.authContainer.style.marginLeft = '-100%'
+        })
+    this.querySelector('#cancel_reset_signin')
+        .addEventListener('click', () => {
+          this.resetForms()
+          this.authContainer.style.marginLeft = '0'
+        })
+  }
+
+  resetForms() {
+    const forms = this.querySelectorAll('.auth_form');
+    const errors = this.querySelectorAll('.errors');
+    // clear form fields and errors
+    forms.forEach( el => el.reset());
+    errors.forEach( el => el.innerHTML = "");
+  }
+
+  disableInput(id) {
+    const el = document.querySelector(id);
+    if (el) {
+      el.setAttribute('disabled', '');
+    }
   }
 
   attributeChangedCallback() {

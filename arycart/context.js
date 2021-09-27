@@ -4,7 +4,7 @@ const freeze = state => Object.freeze(clone(state))
 
 // state
 export const store = initialState => {
-  // callbacks for anytime state is changes
+  // callbacks for anytime state is changed
   let listeners = []
 
   // intercept changes to state object with a set trap and run each listed callbacks

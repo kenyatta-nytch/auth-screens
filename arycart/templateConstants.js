@@ -84,7 +84,7 @@ export const SIGNIN =
             <button type="button" id="signup_redirect" class="link_btn redirect_btn">Sign Up</button>
         </div>
         <form id="signin" class="auth_form" method="POST">
-            <input required type="email" name="email" id="signin_email" class="auth_input" placeholder="Email Address"/>
+            <input required type="email" name="email" id="signin_email" class="auth_input" placeholder="Email Address" maxlength="100"/>
             <input required type="password" name="password" id="signin_pass" class="auth_input" placeholder="Password"/>
             <div id="signin_errors" class="errors"></div>
             <div class="secondary">
@@ -99,16 +99,16 @@ export const SIGNIN =
     </section>`;
 
 export const SIGNUP =
-    `<section id="signup" class="signup">
+    `<section class="signup">
         <h2 class="form_header">Sign Up</h2>
         <div class="auth_redirect">
             <p>Already have an account?</p>
             <button type="button" id="signin_redirect" class="link_btn redirect_btn">Sign In</button>
         </div>
         <form id="signup" class="auth_form" method="POST">
-            <input required type="text" name="firstname" id="signup_fname" class="auth_input" placeholder="First Name"/>
-            <input required type="text" name="lastname" id="signup_lname" class="auth_input" placeholder="Last Name"/>
-            <input required type="email" name="email" id="signup_email" class="auth_input" placeholder="Email Address"/>
+            <input required type="text" name="firstname" id="signup_fname" class="auth_input" placeholder="First Name" maxlength="80"/>
+            <input required type="text" name="lastname" id="signup_lname" class="auth_input" placeholder="Last Name" maxlength="80"/>
+            <input required type="email" name="email" id="signup_email" class="auth_input" placeholder="Email Address" maxlength="100"/>
             <input required type="password" name="password" id="signup_pass" class="auth_input" placeholder="Password"/>
             <div id="signup_errors" class="errors"></div>
             <label class="terms_conditions">
@@ -116,6 +116,24 @@ export const SIGNUP =
                 By checking this box, you accept our Terms & Conditions
             </label>
             <button type="submit" id="signup_btn" class="auth_btn">Sign Up</button>
+        </form>
+    </section>`;
+
+export const RESET_PASSWORD =
+    `<section class="password_reset">
+        <h2 class="form_header">Reset Password</h2>
+        <form id="password_reset" class="auth_form" method="POST">
+            <input required type="email" name="email" id="reset_email" class="auth_input" placeholder="Send link to: Email Address" maxlength="100"/>
+            <div id="reset_errors" class="errors"></div>
+            <div id="reset_success">
+                <p class="info">If your email is in our database, we have sent you a message with a link to reset
+                your password</p>
+            </div>
+            <div class="secondary">
+                <button type="button" id="cancel_reset_signin" class="link_btn redirect_btn">Back to Sign In</button>
+                <button type="submit" id="password_reset_btn" class="auth_btn">Reset Password</button>
+                <button type="button" id="cancel_reset_signup" class="link_btn redirect_btn">Sign Up</button>
+            </div>
         </form>
     </section>`;
 
