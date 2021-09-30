@@ -36,12 +36,13 @@ export function openSideNav(event) {
 }
 
 /**
- * @param {String} id element id to enable
+ * @param {String} id element id to stop loading & enable
  */
-export function enableInput(id) {
+export function stopLoading(id, text) {
   const el = document.querySelector(id);
   if (el) {
     el.removeAttribute('disabled');
+    el.innerHTML = text;
   }
 }
 
@@ -49,6 +50,7 @@ export function successfulReset() {
   const btn = document.querySelector('#password_reset_btn');
   const info = document.querySelector('#reset_success');
   const email = document.querySelector('#reset_email');
+  notify('Password reset Successfully!');
 
   btn.style.display = 'none';
   email.setAttribute('disabled', '');
@@ -63,10 +65,10 @@ export function switchControls(to) {
   const controls = document.querySelector('ary-controls')
   if (to) {
     if (to === 'auth') {
-      controls.removeAttribute('logged')
+      controls.setAttribute('logged', false)
     }
     if (to === 'nav'){
-      controls.setAttribute('logged', '')
+      controls.setAttribute('logged', true)
     }
   }
 }
@@ -74,18 +76,31 @@ export function switchControls(to) {
  * save data and switch to relevant controls
  * @param {Object} cartdata
  */
-export function updateControls(cartdata) {
-  const {setUser, updateCart} = window.arycartContext.actions
+export function updateControls(cartdata=null) {
+  if (cartdata) {
+    const {setUser, updateCart} = window.arycartContext.actions
 
-  if (cartdata.logged) {
-      window.isAryCartLogged = cartdata.logged;
-      setUser(cartdata.user)
-      updateCart(cartdata.cart);
-      switchControls('nav')
-  } else {
-      window.isAryCartLogged = false;
-      setUser('');
-      updateCart([])
-      switchControls('auth')
+    if (cartdata.logged) {
+        window.isAryCartLogged = cartdata.logged;
+        setUser(cartdata.user)
+        updateCart(cartdata.cart);
+        switchControls('nav')
+    } else {
+        window.isAryCartLogged = false;
+        setUser('');
+        updateCart([])
+        switchControls('auth')
+    }
+  }
+}
+
+/**
+ * Initiate the notification popup
+ * @param {String} msg String to pass to notification component
+ */
+export function notify(msg) {
+  if (msg && typeof msg === "string") {
+    const popup = document.querySelector('popup-notification');
+    popup.setAttribute('message', msg);
   }
 }

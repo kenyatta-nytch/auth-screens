@@ -1,5 +1,5 @@
 import { store, handlers } from './context.js'
-import { AuthComponent, Controls, SideNav } from './components.js'
+import { AuthComponent, Controls, SideNav, Notification } from './components.js'
 import { getCartInfo } from './apiCalls.js'
 
 // context initialisations
@@ -34,3 +34,4 @@ window.onload = function() {
 customElements.define('auth-component', AuthComponent)
 customElements.define('ary-controls', Controls)
 customElements.define('side-nav', SideNav)
+customElements.define('popup-notification', Notification)

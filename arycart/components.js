@@ -1,7 +1,7 @@
 // Web components classes.
-import {MODAL, AUTH_CONTROL, SIDENAV_CONTROL, SIDENAV, SIGNIN, SIGNUP, RESET_PASSWORD, CART_ICON, GO_TO_CART, productItem, itemsTotal, menuItem} from './templateConstants.js'
+import {MODAL, AUTH_CONTROL, SIDENAV_CONTROL, SIDENAV, SIGNIN, SIGNUP, RESET_PASSWORD, CART_ICON, GO_TO_CART, NOTIFICATION_POPUP, productItem, itemsTotal, menuItem} from './templateConstants.js'
 import {openModal, closeModal, openSideNav, closeSideNav} from './controls.js'
-import {signIn, signUp, resetPassword, logout} from './apiCalls.js'
+import {signIn, signUp, resetPassword, logout, getCartInfo} from './apiCalls.js'
 import {generateHTML} from './helpers.js'
 
 // root class for modal and sidenav
@@ -35,13 +35,11 @@ export class Controls extends HTMLElement {
     this.navTemplate = generateHTML(SIDENAV_CONTROL).cloneNode(true)
 
     this.appendChild(this.cartTemplate)
-    this.style.display = 'flex'
-    this.style.justifyContent = 'flex-end'
-    this.style.padding = '5px 10px'
+    this.classList.add('controls');
   }
 
   connectedCallback() {
-    this.renderControls()
+    getCartInfo() // try and get cart info then set auth or user nav
     this.querySelector('#cart').addEventListener('click', openSideNav)
     // add a callback to application state context to be called when state changes.
     // updates cart whenever cart available in state changes
@@ -66,7 +64,6 @@ export class Controls extends HTMLElement {
   updateCart(cart) {
     this.count = Array.isArray(cart) && cart.length || 0
     this.querySelector('#cart-count').innerHTML = this.count
-    // this.querySelector('#cart-link').setAttribute('href', this.count > 0? '/order':'#')
   }
 
   // render the appropriate controls when logged in or out
@@ -105,17 +102,17 @@ export class AuthComponent extends Base {
     // submit events & callbacks
     this.querySelector('#signin')
         .addEventListener('submit',(e) => {
-          this.disableInput('#signin_btn')
+          this.startLoading('#signin_btn')
           signIn(e)
         })
     this.querySelector('#signup')
         .addEventListener('submit',(e) => {
-          this.disableInput('#signup_btn')
+          this.startLoading('#signup_btn')
           signUp(e)
         })
     this.querySelector('#password_reset')
         .addEventListener('submit',(e) => {
-          this.disableInput('#password_reset_btn')
+          this.startLoading('#password_reset_btn')
           resetPassword(e)
         })
 
@@ -155,15 +152,20 @@ export class AuthComponent extends Base {
     errors.forEach( el => el.innerHTML = "");
   }
 
-  disableInput(id) {
+  startLoading(id) {
     const el = document.querySelector(id);
+    const div = document.createElement('div');
+    div.classList.add('loader');
     if (el) {
       el.setAttribute('disabled', '');
+      el.innerHTML = '';
+      el.appendChild(div);
     }
   }
 
   attributeChangedCallback() {
-    this.toggle('modal')
+    this.toggle('modal');
+    this.resetForms();
   }
 }
 
@@ -236,7 +238,9 @@ export class SideNav extends Base {
         this.cart.forEach(item => {
           total += (item.product.price * item.quantity)
           let cartItem = generateHTML(productItem(item)).cloneNode(true)
-          cartItem.addEventListener('click', () => {window.location = `/meuble/${item.product.id}`})
+          if (item.product.link) {
+            cartItem.addEventListener('click', () => {window.location = item.product.link})
+          }
           this.body.querySelector('#cart-items').appendChild(cartItem)
         })
 
@@ -258,6 +262,28 @@ export class SideNav extends Base {
         this.body.appendChild(link)
       })
       this.querySelector('#logout').addEventListener('click', logout)
+    }
+  }
+}
+
+export class Notification extends HTMLElement {
+  static get observedAttributes() { return ['message'] };
+  constructor() {
+    super();
+    this.template = generateHTML(NOTIFICATION_POPUP).cloneNode(true);
+    this.append(this.template);
+  }
+  attributeChangedCallback() {
+    if (this.getAttribute('message') !== '') {
+      const popup = this.querySelector('.notification');
+      const message = this.getAttribute('message');
+      this.querySelector('#popup-msg').innerHTML = message;
+      popup.classList.remove('hide-notification');
+      popup.classList.add('show-notification');
+      setTimeout(() => {
+        popup.classList.remove('show-notification');
+        popup.classList.add('hide-notification');
+      }, 2000)
     }
   }
 }

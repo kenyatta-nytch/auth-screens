@@ -1,4 +1,4 @@
-import {updateControls, enableInput} from './controls.js'
+import {updateControls, stopLoading} from './controls.js'
 
 /** 
  * @param {String} html markup string to buld from
@@ -52,15 +52,15 @@ export function renderErrors(type, errors) {
   if (type === 'signin'){
       signinErrors.innerHTML = "";
       errorStrings.forEach(e => signinErrors.appendChild(e));
-      enableInput('#signin_btn')
+      stopLoading('#signin_btn', 'Sign In')
   } else if(type === 'signup') {
       signupErrors.innerHTML = "";
       errorStrings.forEach(e => signupErrors.appendChild(e));
-      enableInput('#signup_btn')
+      stopLoading('#signup_btn', 'Sign Up')
   } else if(type === 'reset') {
       resetErrors.innerHTML = "";
       errorStrings.forEach(e => resetErrors.appendChild(e));
-      enableInput('#password_reset_btn')
+      stopLoading('#password_reset_btn', 'Reset Password')
   } else throw new SyntaxError("Pass a string of either 'signin' or 'signup' or 'reset'");
   return;
 }

@@ -12,6 +12,11 @@
     grid-template-columns: 1fr;
     overflow-x: hidden;
 }
+.controls {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 10px;
+}
 
 /* Modal styles */
 #modal_container {
@@ -58,10 +63,11 @@
     width: 100%;
     flex: 1;
     display: flex;
+    align-items: center;
     flex-direction: column;
 }
 .auth_input {
-    /* width: 100%; */
+    width: 100%;
     padding: 8px 10px;
     margin: 8px 0;
     border-radius: 4px;
@@ -76,13 +82,15 @@
     border: 1px solid gray;
 }
 
-#password_reset_btn {margin: 0;}
 #reset_success {display: none;}
 .auth_btn {
     width: 10em;
     padding: 10px 20px;
     font-size: 18px;
-    margin: 5px auto;
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     background-color: gray;
     color: #fff;
@@ -246,6 +254,29 @@
     fill: #fff;
 }
 
+/* notification popup */
+.notification {
+    width: 300px;
+    min-height: 80px;
+    padding: 3px 6px;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 15px;
+    border-radius: 6px;
+    box-shadow: -3px 6px 12px #222;
+    background-color: #fff;
+    transition: .3s ease;
+    z-index: 999;
+}
+.hide-notification {
+    right: -100%;
+}
+.show-notification {
+    right: 15px;
+}
+
 /* different button styles */
 .link_btn {
     width: max-content;
@@ -275,11 +306,26 @@
 }
 
 .secondary {
-    padding: 5px 0;
+    margin: 5px 0;
     width: 100%;
     display: flex;
     font-size: 14px;
     flex-direction: column;
+}
+
+/* Loader */
+.loader {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @media only screen and (min-width: 600px) {
